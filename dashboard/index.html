@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Launch Radar — pre-token protocols ranked by implied value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <p class="kicker">Token Launch Radar</p>
+    <h1>Protocols with no token yet, ranked by what one would be worth</h1>
+    <p class="standfirst">Every protocol in the snapshot that records no token is valued from the ones that
+      do: the market-cap-to-TVL multiple of its tokenized peers, applied to its own TVL and adjusted for
+      its 7-day momentum, its tracked age and its chain breadth. Each row carries the arithmetic and a
+      farm plan. An implied value is this board's own claim about a record, never a prediction that a
+      token will be issued.</p>
+    <p class="meta" id="meta-line">Loading the snapshot…</p>
+  </div>
+</header>
+
+<nav class="tabs wrap" aria-label="Views">
+  <a href="#/" data-tab="board">Radar board</a>
+  <a href="#/live" data-tab="live">Already trading</a>
+  <a href="#/method" data-tab="method">How the values are made</a>
+</nav>
+
+<main class="wrap">
+  <section id="view-board">
+    <form class="controls" id="controls" aria-label="Filter the board">
+      <label class="ctl grow">Search
+        <input type="search" id="f-q" placeholder="Protocol name or slug" autocomplete="off">
+      </label>
+      <label class="ctl">Category
+        <select id="f-cat"></select>
+      </label>
+      <label class="ctl">Chain
+        <select id="f-chain"></select>
+      </label>
+      <label class="ctl">Implied value at least
+        <select id="f-min">
+          <option value="0">Any value</option>
+          <option value="1000000">$1M</option>
+          <option value="10000000">$10M</option>
+          <option value="50000000">$50M</option>
+          <option value="100000000">$100M</option>
+          <option value="500000000">$500M</option>
+        </select>
+      </label>
+      <label class="ctl">Sort by
+        <select id="f-sort">
+          <option value="value">Implied value</option>
+          <option value="tvl">TVL</option>
+          <option value="change-desc">7d change, high first</option>
+          <option value="change-asc">7d change, low first</option>
+          <option value="multiple">Implied multiple</option>
+          <option value="age">Age, oldest first</option>
+          <option value="name">Name A–Z</option>
+        </select>
+      </label>
+      <label class="ctl check"><input type="checkbox" id="f-wl"> Watchlist only</label>
+    </form>
+    <div class="summary" id="summary-band" aria-label="Board totals"></div>
+    <p class="count" id="count-line" role="status"></p>
+    <div class="tablebox">
+      <table id="board-table">
+        <thead>
+          <tr>
+            <th class="num">Rank</th>
+            <th>Protocol</th>
+            <th>Category</th>
+            <th>Chains</th>
+            <th class="num">TVL</th>
+            <th class="num">7d</th>
+            <th class="num">Implied value</th>
+            <th class="num">× TVL</th>
+          </tr>
+        </thead>
+        <tbody id="board-body"></tbody>
+      </table>
+      <p class="empty" id="board-empty" hidden>No protocol matches those filters. Loosen one and the board fills again.</p>
+    </div>
+    <p class="note">The watchlist badge marks the snapshot's own watchlist: tokenless protocols at or
+      above its $50M TVL floor. The board ranks them all, and keeps going below the floor — the early
+      rows are the point of a radar. Rows are ordered by implied value; click any row for its
+      arithmetic and its farm plan.</p>
+  </section>
+
+  <section id="view-detail" hidden></section>
+
+  <section id="view-live" hidden>
+    <h2>Already trading — set aside, and used as evidence</h2>
+    <p class="lede">These protocols have tokens. The board never ranks them: it reads their
+      market-cap-to-TVL multiples as the market's own prices for TVL, category by category, and applies
+      those multiples to the protocols still waiting. The thirty largest by market cap are shown; the
+      model uses every usable one.</p>
+    <div class="tablebox">
+      <table id="live-table">
+        <thead>
+          <tr><th>Protocol</th><th>Category</th><th class="num">TVL</th><th class="num">Market cap</th><th class="num">Cap / TVL</th></tr>
+        </thead>
+        <tbody id="live-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="view-method" hidden>
+    <h2>How the values are made</h2>
+    <div id="method-body"></div>
+    <h3>Category multiples</h3>
+    <p class="lede">The multiple applied to each category, the comps behind it, and how it was reached.
+      “Shrunk” means a thin category's own median was blended toward its family's median in log space,
+      weighted by its comp count, reaching full weight at five comps.</p>
+    <div class="tablebox">
+      <table id="cat-table">
+        <thead>
+          <tr><th>Category</th><th>Family</th><th class="num">Comps</th><th class="num">Own median</th><th class="num">Multiple used</th><th>Basis</th></tr>
+        </thead>
+        <tbody id="cat-body"></tbody>
+      </table>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap foot">
+  <p>Built from one sealed snapshot and nothing else: no live prices, no outside data, no protocol
+    named by hand. Implied values are a model's reading of a record at the snapshot's date; a protocol
+    may issue a token worth more, less, or never issue one at all. Nothing here is financial advice.</p>
+</footer>
+
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

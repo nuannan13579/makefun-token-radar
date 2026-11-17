@@ -83,6 +83,8 @@ export interface RadarData {
   model_version: string;
   methodology: string;
   counts: { protocols: number; pre_token: number; watchlist: number; board: number; set_aside: number; tokenized: number };
+  /** The model's stated constants, the same object board.json carries. */
+  model: BoardDocument['model'];
   market_median: number;
   market_comp_count: number;
   categories: CategoryMultiple[];
@@ -229,6 +231,7 @@ export function buildBoard(snapshot: Snapshot): { doc: BoardDocument; radar: Rad
     model_version: MODEL_VERSION,
     methodology,
     counts,
+    model: doc.model,
     market_median: model.market_median,
     market_comp_count: model.market_comp_count,
     categories,
